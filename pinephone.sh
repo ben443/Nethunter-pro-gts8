@@ -6,7 +6,7 @@ set -e
 cd `dirname $0`
 
 # Creating blank image, make partitions and mount for rootfs
-mkimg phosh_pp.img 3
+mkimg phosh_pp.img 5
 
 echo '[*]Stage 1: Debootstrap'
 [ -e $ROOTFS/etc/passwd ] && echo -e "[*]Debootstrap already done.b\nSkipping Debootstrap..." || debootstrap --foreign --arch $ARCH kali-rolling $ROOTFS http://kali.download/kali
