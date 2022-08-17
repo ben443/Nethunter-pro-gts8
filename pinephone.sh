@@ -22,7 +22,7 @@ UUID=`blkid -s UUID -o value $BOOT_P`	/boot	ext4	defaults	0	2
 EOF
 
 echo '[*]Stage 3: Installing Extra Packages'
-nspawn-exec /third_stage/install
+nspawn-exec /third_stage/third_stage
 
 # Cleanup
 rm -rf $ROOTFS/third_stage

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 cd `dirname $0`
 
 echo 'kali'>/etc/hostname
@@ -29,6 +27,9 @@ sed -i 's/bash/zsh/' /etc/passwd
 echo '[*]Copying Configs...'
 rsync -HPavz confs/ /
 
+echo '[*]Enabling kali plymouth theme...'
+plymouth-set-default-theme kali
+
 echo '[*]Installing Extra Packages(kernel, alsa-ucm-conf etc)...'
 for i in `ls debs | grep '\.deb'`
 do
@@ -37,8 +38,8 @@ done
 
 chown kali:kali -R /home/kali
 
-echo '[*]Enabling kali plymouth theme...'
-plymouth-set-default-theme -R kali
+echo '[*]Update u-boot config...'
+u-boot-update
 
 for i in $(cat svcs)
 do
