@@ -30,7 +30,7 @@ echo '[*]Copying Configs...'
 rsync -HPavz confs/ /
 
 echo '[*]Installing Extra Packages(kernel, alsa-ucm-conf etc)...'
-for i in `ls debs`
+for i in `ls debs | grep '\.deb'`
 do
 	apt install -y ./debs/$i
 done
