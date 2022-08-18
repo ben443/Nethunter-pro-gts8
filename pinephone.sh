@@ -12,7 +12,7 @@ echo '[*]Stage 1: Debootstrap'
 [ -e $ROOTFS/etc/passwd ] && echo -e "[*]Debootstrap already done.b\nSkipping Debootstrap..." || debootstrap --foreign --arch $ARCH kali-rolling $ROOTFS http://kali.download/kali
 
 echo '[*]Stage 2: Debootstrap Second Stage'
-rsync -r third_stage $ROOTFS/
+rsync -rl third_stage $ROOTFS/
 [ -e $ROOTFS/debootstrap/debootstrap ] && nspawn-exec /third_stage/second_stage || echo '[*]Second Stage already done'
 
 cat << EOF > ${ROOTFS}/etc/fstab
