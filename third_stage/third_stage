@@ -11,16 +11,14 @@ apt update
 apt upgrade -y
 
 echo '[*]Installing Base and Phosh Packages...'
-apt install -y kali-linux-core kali-defaults phosh-phone pinephone-tweaks u-boot-menu rsync wget curl vim gnome-text-editor megapixels systemd-timesyncd inetutils-ping libcanberra-pulse firmware-realtek-rtl8723cs-bt
-ln -rs /usr/share/alsa/ucm2/PinePhone/PinePhone.conf /usr/share/alsa/ucm2/conf.d/simple-card/
+apt install -y kali-linux-core kali-defaults phosh-phone pinephone-tweaks u-boot-menu rsync wget curl vim gnome-text-editor megapixels systemd-timesyncd inetutils-ping libcanberra-pulse firmware-realtek-rtl8723cs-bt eg25-manager
+#ln -rs /usr/share/alsa/ucm2/PinePhone/PinePhone.conf /usr/share/alsa/ucm2/conf.d/simple-card/
 
 echo '[*]Adding User:kali, pass:8888...'
 adduser --disabled-password --gecos "" kali
 usermod --password `echo 8888 | openssl passwd -1 -stdin` kali
 usermod -aG dialout,sudo,audio,video,plugdev,input,render,bluetooth,feedbackd kali
 
-echo '[*]Enabling Phosh...'
-systemctl enable phosh
 sed -i 's/-0.07/0/;s/-0.13/0/' /usr/share/plymouth/themes/kali/kali.script
 sed -i 's/bash/zsh/' /etc/passwd
 

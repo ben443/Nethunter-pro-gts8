@@ -6,14 +6,14 @@ set -e
 cd `dirname $0`
 
 # Creating blank image, make partitions and mount for rootfs
-mkimg phosh_pp.img 5
+mkimg phosh_rel_pp.img 5
 
 echo '[*]Stage 1: Debootstrap'
-[ -e $ROOTFS/etc/passwd ] && echo -e "[*]Debootstrap already done.b\nSkipping Debootstrap..." || debootstrap --foreign --arch $ARCH kali-rolling $ROOTFS http://kali.download/kali
+[ ! -e kali_rootfs/debootstrap/debootstrap ] && [ -e kali_rootfs/etc/passwd ] && echo -e "[*]Debootstrap already done.b\nSkipping Debootstrap..." || debootstrap --foreign --arch $ARCH kali-rolling $ROOTFS http://kali.download/kali
 
 echo '[*]Stage 2: Debootstrap Second Stage'
 rsync -rl third_stage $ROOTFS/
-[ -e $ROOTFS/debootstrap/debootstrap ] && nspawn-exec /third_stage/second_stage || echo '[*]Second Stage already done'
+[ -e $ROOTFS/etc/passwd ] && echo '[*]Second Stage already done' || nspawn-exec /third_stage/second_stage
 
 cat << EOF > ${ROOTFS}/etc/fstab
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
@@ -24,6 +24,11 @@ EOF
 echo '[*]Stage 3: Installing Extra Packages'
 nspawn-exec /third_stage/third_stage
 
-# Cleanup
+# Cleanup and Unmount
 rm -rf $ROOTFS/third_stage
+umount $ROOTFS/boot
+umount $ROOTFS
+rmdir $ROOTFS
+losetup -D
+echo '[*]PinePhone Image Generated.'
 
