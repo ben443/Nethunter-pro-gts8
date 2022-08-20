@@ -4,26 +4,31 @@
 
 set -e
 cd `dirname $0`
-arch='arm64'
-rootfs='rootfs'
-qemu_bin='/usr/bin/qemu-aarch64-static'
-machine='debian'
+
+# Creating blank image, make partitions and mount for rootfs
+mkimg phosh_rel_pp.img 5
 
 echo '[*]Stage 1: Debootstrap'
-[ -d $rootfs ] && echo -e "[*]$(basename rootfs) already exist\nSkipping Debootstrap..." || debootstrap --foreign --arch $arch kali-rolling $rootfs http://kali.download/kali
+[ ! -e kali_rootfs/debootstrap/debootstrap ] && [ -e kali_rootfs/etc/passwd ] && echo -e "[*]Debootstrap already done.b\nSkipping Debootstrap..." || debootstrap --foreign --arch $ARCH kali-rolling $ROOTFS http://kali.download/kali
 
 echo '[*]Stage 2: Debootstrap Second Stage'
-sec="$rootfs/second_stage"
-cat << 'EOF' > $sec
-/debootstrap/debootstrap --second-stage
+rsync -rl third_stage $ROOTFS/
+[ -e $ROOTFS/etc/passwd ] && echo '[*]Second Stage already done' || nspawn-exec /third_stage/second_stage
+
+cat << EOF > ${ROOTFS}/etc/fstab
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+UUID=`blkid -s UUID -o value $ROOT_P`	/	ext4	defaults	0	1
+UUID=`blkid -s UUID -o value $BOOT_P`	/boot	ext4	defaults	0	2
 EOF
-chmod +x $sec
-nspawn-exec /`basename $sec`
 
 echo '[*]Stage 3: Installing Extra Packages'
-rsync -r third_stage $rootfs/
-nspawn-exec /third_stage/install
+nspawn-exec /third_stage/third_stage
 
-# Cleanup
-rm -rf $sec $rootfs/third_stage
+# Cleanup and Unmount
+rm -rf $ROOTFS/third_stage
+umount $ROOTFS/boot
+umount $ROOTFS
+rmdir $ROOTFS
+losetup -D
+echo '[*]PinePhone Image Generated.'
 
