@@ -1,6 +1,6 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $family := or .family "sunxi" }}
-{{- $device := or .device "pinephone" }}
+{{- $family := or .family "qcom" }}
+{{- $device := or .device "sm8450" }}
 {{- $partitiontable := or .partitiontable "gpt" }}
 {{- $filesystem := or .filesystem "ext4" }}
 {{- $environment := or .environment "phosh" -}}
