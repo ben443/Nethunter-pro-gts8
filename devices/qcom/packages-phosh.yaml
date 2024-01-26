@@ -1,5 +1,5 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $device := or .device "sdm845" }}
+{{- $device := or .device "sm8450" }}
 
 architecture: {{ $architecture }}
 
