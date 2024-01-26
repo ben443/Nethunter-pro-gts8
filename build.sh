@@ -6,7 +6,7 @@ if [ -z ${ARGS+x} ]; then
     ARGS=""
 fi
 
-device="pinephonepro|samsung_galaxy_tab_s8"
+device="sm8450|tab8"
 image="image"
 partitiontable="gpt"
 filesystem="ext4"
@@ -84,7 +84,7 @@ case "$device" in
     family="sunxi"
     ARGS="$ARGS -t nonfree:true"
     ;;
- "samsung_galaxy_tab_s8" )
+ "sm8450" )
     arch="arm64"
     family="samsung"
     ARGS="$ARGS -t nonfree:true"
