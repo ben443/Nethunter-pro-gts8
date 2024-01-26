@@ -1,7 +1,7 @@
 {{- $architecture := or .architecture "arm64" -}}
-{{- $family := or .family "sunxi" }}
+{{- $family := or .family "qcom" }}
 {{- $nonfree := or .nonfree "false" -}}
-{{- $device := or .device "pinephone" }}
+{{- $device := or .device "sm8450" }}
 {{- $environment := or .environment "phosh" -}}
 {{- $rootfs := or .rootfs "rootfs.tar.gz" }}
 {{- $miniramfs := or .miniramfs "false" }}
