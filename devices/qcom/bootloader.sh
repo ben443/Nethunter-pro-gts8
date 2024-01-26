@@ -18,7 +18,7 @@ generate_bootimg() {
     fi
 
     # Workaround a bug in the SDHCI driver on SM7225
-    if [ "${SOC}" = "qcom/sm7225" ]; then
+    if [ "${SOC}" = "qcom/sm8450" ]; then
         CMDLINE="${CMDLINE} sdhci.debug_quirks=0x40"
     fi
 
@@ -50,8 +50,8 @@ case "${DEVICE}" in
         generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "beryllium" "ebbg"
         generate_bootimg "${ROOTPART}" "qcom/sdm845" "xiaomi" "polaris"
         ;;
-    "sm7225")
-        generate_bootimg "${ROOTPART}" "qcom/sm7225" "fairphone" "fp4"
+    "sm8450")
+        generate_bootimg "${ROOTPART}" "qcom/sm8450" "samsung" "tabs8"
         ;;
     *)
         echo "ERROR: unsupported device ${DEVICE}"
